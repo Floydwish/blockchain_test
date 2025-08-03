@@ -2,11 +2,11 @@
 pragma solidity ^0.8.17;
 
 contract myBank{
-    address public owner; // 合约所有者地址
+    address private owner; // 合约所有者地址
     uint256 public totalDeposits; // 总存款金额
 
     //mapping 类型变量，用于存储每个地址对应的余额
-    mapping(address => uint256) public balances;
+    mapping(address => uint256) private balances;
 
     // 数组，用于记录存款金额的前3名用户
     address[3] public top3Depositors;
