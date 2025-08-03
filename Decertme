@@ -1,0 +1,368 @@
+模块二：Solidity 语言特性
+
+练习 3： 理解 ABI 编解码规则
+链接: https://decert.me/quests/10c11aa7-2ccd-4bcc-8ccd-56b51f0c12b8
+
+
+1. 第1小题：
+计算以下函数签名的 ABI 编码后的字节大小：
+function transfer(address recipient, uint256 amount)
+
+答案：68
+
+
+2. 第2小题：ABI 编码和解码
+  
+完善ABIEncoder合约的encodeUint和encodeMultiple函数，使用abi.encode对参数进行编码并返回
+完善ABIDecoder合约的decodeUint和decodeMultiple函数，使用abi.decode将字节数组解码成对应类型的数据
+
+pragma solidity ^0.8.0;
+
+contract ABIEncoder {
+    function encodeUint(uint256 value) public pure returns (bytes memory) {
+        //
+        return abi.encode(value);
+    }
+
+    function encodeMultiple(
+        uint num,
+        string memory text
+    ) public pure returns (bytes memory) {
+       //
+       return abi.encode(num, text);
+    }
+}
+
+contract ABIDecoder {
+    function decodeUint(bytes memory data) public pure returns (uint) {
+        //
+        return abi.decode(data, (uint));
+    }
+
+    function decodeMultiple(
+        bytes memory data
+    ) public pure returns (uint, string memory) {
+        //
+        return abi.decode(data, (uint, string));
+    }
+}
+
+
+
+
+
+3.第3小题：
+补充完整getFunctionSelector1函数，返回getValue函数的签名
+补充完整getFunctionSelector2函数，返回setValue函数的签名
+
+pragma solidity ^0.8.0;
+
+contract FunctionSelector {
+    uint256 private storedValue;
+
+    function getValue() public view returns (uint) {
+        return storedValue;
+    }
+
+    function setValue(uint value) public {
+        storedValue = value;
+    }
+
+    function getFunctionSelector1() public pure returns (bytes4) {
+        //
+        return getvalue.selector;
+    }
+
+    function getFunctionSelector2() public pure returns (bytes4) {
+        //
+        return setvalue.selector;
+    }
+}
+
+
+4. 第4小题
+补充完整 getDataByABI ，对getData函数签名及参数进行编码，调用成功后解码并返回数据
+补充完整setDataByABI1，使用abi.encodeWithSignature()编码调用setData函数，确保调用能够成功
+补充完整setDataByABI2，使用abi.encodeWithSelector()编码调用setData函数，确保调用能够成功
+补充完整setDataByABI3，使用abi.encodeCall()编码调用setData函数，确保调用能够成功
+
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract DataStorage {
+    string private data;
+
+    function setData(string memory newData) public {
+        data = newData;
+    }
+
+    function getData() public view returns (string memory) {
+        return data;
+    }
+}
+
+contract DataConsumer {
+    address private dataStorageAddress;
+
+    constructor(address _dataStorageAddress) {
+        dataStorageAddress = _dataStorageAddress;
+    }
+
+    function getDataByABI() public returns (string memory) {
+        // payload
+        '''
+        直接在函数中调用abi.encodeWithSignature函数对数据进行编码。需要两种参数
+        1.函数签名
+        2.函数具体参数
+
+        格式：abi.encodeWithSignature("myFunction(uint256,string)", 123, "Hello");
+        '''
+        bytes memory payload = abi.encodeWithSignature("getData()");
+
+        (bool success, bytes memory data) = dataStorageAddress.call(payload);
+        require(success, "call function failed");
+
+
+        //使用abi.decode() 解码返回的数据        
+        return abi.decode(data,(string));
+    }
+
+    function setDataByABI1(string calldata newData) public returns (bool) {
+        // playload
+        '''
+        直接在函数中调用abi.encodeWithSignature函数对数据进行编码。需要两种参数
+        1.函数签名
+        2.函数具体参数
+
+        格式：abi.encodeWithSignature("myFunction(uint256,string)", 123, "Hello");
+        '''
+        bytes memory payload = abi.encodeWithSignature("setData(string)", newData);
+
+        (bool success, ) = dataStorageAddress.call(payload);
+
+        return success;
+    }
+
+    function setDataByABI2(string calldata newData) public returns (bool) {
+        // selector
+        // 使用函数名+参数列表计算哈希，取前4个字节
+        bytes4 selector = bytes4(keccak256("setData(string)"))
+        // playload
+        // 编码选择器和参数
+        bytes memory payload = abi.encodeWithSelector(slector, newData);
+
+        (bool success, ) = dataStorageAddress.call(payload);
+
+        return success;
+    }
+
+    function setDataByABI3(string calldata newData) public returns (bool) {
+        // playload
+        bytes memory playload = abi.encodeCall(DataStorage.setData, (newData));
+
+        (bool success, ) = dataStorageAddress.call(playload);
+        return success;
+    }
+}
+
+'''
+3个ABI 编码函数的对比：
+
+1. abi.encodeWithSignature
+这是最传统、最直接的编码方式，它需要你提供函数的完整签名字符串。
+
+工作方式：它会将你提供的函数签名字符串（例如 "setData(string)"）进行哈希运算，截取哈希值的前 4 个字节作为函数选择器（selector），然后将这个选择器和你提供的参数一起进行编码。
+
+优点：简单直接，非常灵活，尤其是在处理动态函数签名时很有用。
+
+缺点：不安全。因为函数签名是一个字符串，如果你手动输入时拼写错误（比如写成 "setdata(string)"），编译器不会报错，但交易会因为函数选择器不匹配而失败。这是一种常见的错误来源。
+
+2. abi.encodeWithSelector
+这种方式将编码过程分为两步，需要你手动提供函数选择器。
+
+工作方式：它不处理函数签名字符串，而是要求你先计算出函数选择器（通常用 bytes4(keccak256("函数签名")) 的方式），然后将这个 4 字节的选择器和你提供的参数一起进行编码。
+
+优点：比 encodeWithSignature 更底层，可以让你对函数选择器有更精确的控制。在某些特殊情况下，比如处理非标准函数签名或动态函数调用时非常有用。
+
+缺点：同样不安全。你需要手动计算函数选择器，如果计算或粘贴错误，编译器同样无法发现，会导致运行时错误。
+
+3. abi.encodeCall
+这是 Solidity 0.8.11 之后引入的最新、最安全的编码方式。
+
+工作方式：它直接使用合约类型和函数名（例如 DataStorage.setData）作为第一个参数，并自动将所有参数进行编码。
+
+优点：最安全。由于它直接引用合约函数，编译器可以在编译时进行类型检查。如果你提供的参数数量或类型与函数签名不匹配，编译器会立即报错，而不是等到交易执行时才失败。这极大地减少了开发中的错误。
+
+缺点：灵活性相对较差。它要求你必须有目标合约的 ABI（Application Binary Interface）信息，所以不能用于处理完全未知的函数签名。
+'''
+
+
+练习 4：理解 call、delegatecall、staticcall 三种低级函数调用方式
+
+链接:https://decert.me/quests/5849ac2d-7a6f-4c94-978c-73c582a575dd
+
+题目#1
+以下哪个函数调用不会改变调用合约的状态?（答案：staticcall)
+
+1.delegatecall: 改变调用者状态（比喻：我把别人请到我家，在我家里干活）
+a.说明：它实际上是将要调用的函数的代码复制到当前合约中进行执行。这意味着被调用的函数将在当前合约的上下文环境下执行，允许外部合约来改变当前合约的存储布局
+b.危险：这种调用模式非常危险！在以太坊的历史上，由于对delegatecall的错误使用而引发了许多安全漏洞和黑客攻击。
+c.什么时候需要
+由于部署的 Solidity 合约不可更改，那我们希望更新函数功能的话怎么办呢？我们先部署一个代理合约 A，在里面 delegatecall 合约 B 的功能。
+更新时，只需要更改合约 B 的地址变成合约 C，这样合约 A 就可以使用新版合约 C 的功能。
+
+2.staticcall：不改变任何合约的状态
+a.工作原理：staticcall 类似于 call，但它有一个严格的限制：被调用的函数必须是 view 或 pure 函数，即不能修改状态。
+
+b.状态影响：如果被调用的函数试图修改状态变量，staticcall 会立即回退（revert）。因此，它确保了任何合约的状态都不会被修改。
+
+3.以上都会改变状态
+
+4.call：改变被调用者状态（比喻：我到别人家里，请对方在他家干活）
+a.为什么要用低级调用？
+灵活的交互：低级调用允许你仅通过合约的链上地址与其进行交互，而无需提供接口或合约变量等详细信息。
+这使得与其他合约的交互更加简便，你只需关注目标合约的地址即可。
+
+非回滚性调用：使用低级调用进行函数调用时，如果调用失败并出现异常，不会导致整个交易的回滚。
+相反，它会返回一个布尔值来指示调用是否成功。
+这种设计使得开发者可以更加灵活地处理调用的结果，根据需要采取适当的措施。
+
+题目#2
+以下说法正确的是？(a,d)
+a.call 会在被调用合约的存储和上下文中执行其代码
+b.call 会在失败时自动回滚事务，而 delegatecall 不会
+c.使用 call 发送 Ether 时，gas 默认有限制
+d.delegatecall 会在调用者的上下文中执行被调用合约的代码
+
+题目#3
+staticcall
+  
+补充完整 Caller 合约的 callGetData 方法，使用 staticcall 调用 Callee 合约中 getData 函数，
+并返回值。当调用失败时，抛出“staticcall function failed”异常。
+
+pragma solidity ^0.8.0;
+
+contract Callee {
+    function getData() public pure returns (uint256) {
+        return 42;
+    }
+}
+
+contract Caller {
+    function callGetData(address callee) public view returns (uint256 data) {
+        // call by staticcall
+        //1.编码函数调用
+        bytes memory payload = abi.encodeWithSignature("getData()");
+
+        //2.使用staticcall 发起调用
+        (bool success, bytes memory returnData) = callee.staticcall(payload);
+
+        //3.检查是否返回成功
+        require(success, "staticcall function failed");
+
+        return data;
+    }
+}
+
+
+题目#4
+使用 call 方法来发送 Ether
+  
+补充完整 Caller 合约 的 sendEther 方法，用于向指定地址发送 Ether。要求：
+
+使用 call 方法发送 Ether
+如果发送失败，抛出“sendEther failed”异常并回滚交易。
+如果发送成功，则返回 true
+
+pragma solidity ^0.8.0;
+
+contract Caller {
+    function sendEther(address to, uint256 value) public returns (bool) {
+        // 使用 call 发送 ether
+        (bool success, bytes memory data) = to.call{value: value}("");
+
+        require(success, "sendEther failed");
+
+        return success;
+    }
+
+    receive() external payable {}
+}
+
+1.语法：
+(bool success, bytes memory data) = address.call{value: amount}("");
+
+address：这是你想要发送 Ether 的目标地址。
+
+{value: amount}：这是一个特殊的 Solidity 语法，用于在调用中附加 Ether。amount 是一个 uint256 类型的变量，代表你想要发送的 wei 数量。
+
+""：这是 call 方法的 data 参数。当你只是想发送 Ether 而不调用任何函数时，传入一个空的字节数组 "" 即可。
+
+2.为什么使用 call 而不是 transfer 或 send？
+在 Solidity 早期，发送 Ether 通常使用 transfer 和 send。但在 Solidity 0.8.0 之后，transfer 和 send 因为它们固定的 2300 Gas 上限而变得不安全，因为这可能会导致接收合约的 receive 或 fallback 函数执行失败。
+
+call 方法没有 Gas 上限，它会转发所有可用的 Gas（不包括调用本身的固定成本），因此是目前最推荐的发送 Ether 的方式。
+
+3.使用 call 的最佳实践
+a.始终检查返回值：call 方法返回一个 bool 值，表示操作是否成功。
+你必须使用 require(success, "...") 来检查这个值，以确保交易不会因为外部调用失败而继续执行。
+
+b.处理重入攻击：由于 call 会转发所有 Gas，如果接收方是恶意合约，
+它可能会在接收 Ether 后立即再次调用你的合约，造成重入攻击。
+
+确保在执行 call 之前先更新状态变量，或者使用重入锁（re-entrancy guard）。
+
+c.使用 payable 地址：call 方法需要一个 address payable 类型的地址才能附加 value。
+
+4.重入攻击案例：取款合约
+
+a.有问题的代码
+contract VulnerableWithdraw {
+    mapping(address => uint252) public balances;
+
+    function withdraw(uint256 amount) public {
+        // 1. 检查余额是否足够
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+
+        // 2. 外部调用，将资金发送给用户
+        (bool success, ) = msg.sender.call{value: amount}(""); // 👈 危险点
+
+        require(success, "Transfer failed");
+
+        // 3. 更新状态变量
+        balances[msg.sender] -= amount; // 👈 这一步执行得太晚了
+    }
+}
+
+b. 攻击流程
+
+用户 A 是一个恶意合约，它在 VulnerableWithdraw 中存入了 10 ether。
+
+用户 A 调用 withdraw(10 ether) 函数。
+
+合约执行到第 2 步，将 10 ether 发送给用户 A 的恶意合约。
+
+当用户 A 的恶意合约收到这笔 Ether 时，它的 receive 或 fallback 函数会被触发。
+
+在 receive 函数中，恶意合约立即再次调用 VulnerableWithdraw 的 withdraw(10 ether) 函数。
+
+此时，关键的漏洞出现了：balances[msg.sender] 的值（10 ether）还没有来得及在第 3 步更新。
+
+因此，第二次调用中的第 1 步检查仍然会通过（balances[msg.sender] >= amount）。
+
+合约再次发送 10 ether 给恶意合约。
+
+恶意合约可以重复这个过程，直到合约中的 Ether 被耗尽。
+
+这就是重入攻击。
+
+c.攻击的核心在于： “外部调用发生在了状态更新之前”。
+重入攻击总结：当你进行外部调用时，你正在将合约的控制权暂时交给另一个外部合约。
+这个外部合约可能是一个恶意合约，它可以在你的函数执行完成之前，再次调用你的合约，
+从而利用你的合约状态还没有来得及更新的漏洞。
+
+
+
+5.防范重入攻击
+a.

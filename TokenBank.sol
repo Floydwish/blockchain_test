@@ -79,4 +79,56 @@ withdraw（）: 用户可以提取自己的之前存入的 token。
 2.本合约需要与 BaseERC20 合约交互。
 BaseERC20: 就像中央银行（有铸币权，维护 用户 和 商业银行的 账户）
 TokenBank: 就像商业银行（仅存取款，维护 用户 的在本行的资金）
+
+3.处理合规的 ERC-20 合约 的返回值
+原因：ERC-20 标准未规定失败后要回退交易
+可能情况：失败后返回false但不回退
+应对方式：require 检查 token.transferFrom 的返回值，返回失败时 revert
+实际案例：ZRX 代币合约：https://etherscan.io/address/0xe41d2489571d322189246dafa5ebde1f4699f498#readContract
+常见于：比较老的代币合约
+
+4.针对2种版本的 ERC20 合约进行处理：1.try/catch:处理会触发异常的；2.检查返回值：处理返回true/fase的
+
+5.支持所有token
+问题：有些token 并非标准 ERC-20标准token(比如，缺少返回值，注：早期的 OpenZeppelin)
+Uniswap的解决方式：检查返回值，同时检查返回的data；实例：https://github.com/Uniswap/solidity-lib/blob/9642a0705fdaf36b477354a4167a8cd765250860/contracts/libraries/TransferHelper.sol#L13-L17
+
+function safeTransferNoRevert(address token, address to, uint value) internal returns (bool) {
+
+  (bool success, bytes memory data) = token.call(abi.encodeWithSelector(0xa9059cbb, to, value));
+
+  return success && (data.length == 0 || abi.decode(data, (bool));
+
+  检查逻辑：
+  如果success为false，则整个表达式立即返回false，因为&&运算符具有短路效应。
+    
+  如果success为true，则检查返回数据的长度。
+  如果长度为0，则认为转账成功，返回true。
+  如果长度不为0，则尝试将返回数据解码为bool值。如果解码后的值为true，则认为转账成功，返回true；否则返回false。
+
+}
+
+最佳方式：使用 OpenZeppelin 的 SafeERC20 实现
+// 已更改，import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/SafeERC20.sol";
+当前最新链接：
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol"
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol";
+//1.SafeERC20.sol: 提供一套安全的 ERC20 代币交互函数
+//2.IERC20.sol: 定义了 ERC20代币的标砖接口
+
+contract TestContract {
+    //using关键字将SafeERC20库中的函数与IERC20接口关联起来
+    //可以对IERC20类型的变量使用SafeERC20库中的函数
+    using SafeERC20 for IERC20; 
+
+    function safeInteractWithToken(uint256 sendAmount) external {
+        //传入 ERC20 代币合约地址
+        IERC20 token = IERC20(address(this));
+
+        //使用IERC20 关联的 SafeERC20 函数
+        token.safeTransferFrom(msg.sender, address(this), sendAmount);
+    }
+}
+
 */

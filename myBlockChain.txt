@@ -1,0 +1,54 @@
+一、Github 链接
+https://github.com/Floydwish/blockchain_test/blob/main/myBlockChain.py
+
+二、运行说明
+1.启动程序
+python3 myblockchain.py
+开始监听5000端口
+
+2.调用挖矿接口
+Get: http://127.0.0.1:5000/mine
+返回：
+{
+    "index": 5,
+    "message": "New Block Forged",
+    "previous_hash": "f1c9ddf3e670167b16787ee7ae9dd699de017cbdfa0d557473b92724f8ab5c10",
+    "proof": 146502,
+    "transactions": [
+        {
+            "amount": 1,
+            "recipient": "525494f3ff6742d79b1654ff3bd5efe9",
+            "sender": "0"
+        }
+    ]
+}
+
+
+三、运行日志
+1.第1次挖矿
+INFO:root:开始挖矿，当前区块的proof值为：100
+INFO:root:找到有效proof, guess: b'10035293', result_hash：0000c415de5ceea33c02daa85a1c218ecca1b1c9e9864ed34d183597844de8e2, proof:35293
+INFO:root:结束挖矿，新区块的proof值为：35293
+INFO:root:上一个区块的哈希值计算结果：91e09ff1e88975bcab3cd050a05b7a640d48a0851c7db264dbf35e13cebc031b
+INFO:root:新区块的previous_hash字段: 91e09ff1e88975bcab3cd050a05b7a640d48a0851c7db264dbf35e13cebc031b
+INFO:root:新区块信息：{'message': 'New Block Forged', 'index': 2, 'transactions': [{'sender': '0', 'recipient': '525494f3ff6742d79b1654ff3bd5efe9', 'amount': 1}], 'proof': 35293, 'previous_hash': '91e09ff1e88975bcab3cd050a05b7a640d48a0851c7db264dbf35e13cebc031b'}
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2025 10:35:30] "GET /mine HTTP/1.1" 200 -
+
+2. 第2次挖矿
+INFO:root:开始挖矿，当前区块的proof值为：35293
+INFO:root:找到有效proof, guess: b'3529335089', result_hash：0000e7ab6ff06de56e7543a54ea6b371ebfcb2e00badeb3c92ba133af91f293b, proof:35089
+INFO:root:结束挖矿，新区块的proof值为：35089
+INFO:root:上一个区块的哈希值计算结果：37741ab8a1ec258fcdafee920209f328efb7c1761e85b8f693d623ee6492b16e
+INFO:root:新区块的previous_hash字段: 37741ab8a1ec258fcdafee920209f328efb7c1761e85b8f693d623ee6492b16e
+INFO:root:新区块信息：{'message': 'New Block Forged', 'index': 3, 'transactions': [{'sender': '0', 'recipient': '525494f3ff6742d79b1654ff3bd5efe9', 'amount': 1}], 'proof': 35089, 'previous_hash': '37741ab8a1ec258fcdafee920209f328efb7c1761e85b8f693d623ee6492b16e'}
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2025 10:35:34] "GET /mine HTTP/1.1" 200 -
+
+3. 第3次挖矿
+INFO:root:开始挖矿，当前区块的proof值为：35089
+INFO:root:找到有效proof, guess: b'35089119678', result_hash：00003274075bd3e7df2904c1b67c336d40a137a96d007b80e0e7bac40ec55f3a, proof:119678
+INFO:root:结束挖矿，新区块的proof值为：119678
+INFO:root:上一个区块的哈希值计算结果：78178fc2591525532862274703035520067d54cc7fdc4f76565b1b149ffb648b
+INFO:root:新区块的previous_hash字段: 78178fc2591525532862274703035520067d54cc7fdc4f76565b1b149ffb648b
+INFO:root:新区块信息：{'message': 'New Block Forged', 'index': 4, 'transactions': [{'sender': '0', 'recipient': '525494f3ff6742d79b1654ff3bd5efe9', 'amount': 1}], 'proof': 119678, 'previous_hash': '78178fc2591525532862274703035520067d54cc7fdc4f76565b1b149ffb648b'}
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2025 10:35:36] "GET /mine HTTP/1.1" 200 -
+
