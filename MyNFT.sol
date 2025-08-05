@@ -49,6 +49,7 @@ contract labubuNFT is ERC721,Ownable,ERC721URIStorage{
       //继承 ERC721URIStorage 后可以返回空，因为 tokenURI 会返回完整 URI
         return "";
     }
+    
 
     // ERC721 标准，必须实现
     // 作用：其他合约、平台调用，查询是否支持了 ERC721接口（支持返回 ture)
