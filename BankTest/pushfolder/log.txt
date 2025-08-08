@@ -1,0 +1,12 @@
+cmd: forge test(log)
+
+Ran 8 tests for test/Bank.t.sol:BankTest
+[PASS] test_DepositUpdateBalance() (gas: 105213)
+[PASS] test_top3WithFourUser() (gas: 268915)
+[PASS] test_top3WithOneUser() (gas: 110901)
+[PASS] test_top3WithOneUserMultipleDeposit() (gas: 117491)
+[PASS] test_top3WithThreeUser() (gas: 227111)
+[PASS] test_top3WithTwoUser() (gas: 165094)
+[PASS] test_withdrawManager() (gas: 118440)
+[PASS] test_withdrawNoManager() (gas: 17411)
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 11.77ms (13.64ms CPU time)
