@@ -1,77 +1,86 @@
+
 # 一、事件监控结果
 ## 1. 上架事件
-接收到新日志: [
+接收到新日志（NFT 上架成功）：
+
+```json
+[
   {
-    eventName: 'NFTListed',
-    args: {
-      nftContract: '0x5B085c2D090556aEA54D595Fe7a70CE98B3CA9e4',
-      tokenId: 2n,
-      price: 1000000000000000000n,
-      paymentToken: '0x237cE762AA51FceF340222B64282B11015Dfe5E5'
+    "eventName": "NFTListed",
+    "args": {
+      "nftContract": "0x5B085c2D090556aEA54D595Fe7a70CE98B3CA9e4",
+      "tokenId": "2n",
+      "price": "1000000000000000000n",
+      "paymentToken": "0x237cE762AA51FceF340222B64282B11015Dfe5E5"
     },
-    address: '0x6da6a7f35aac2abe018eadd9d80ecc7c125deb17',
-    topics: [
-      '0x5ba0ddd8e72e3c5c274414bd1ef0dec9ae5220e0f6f534d859043e2a52f0319f',
-      '0x0000000000000000000000005b085c2d090556aea54d595fe7a70ce98b3ca9e4',
-      '0x0000000000000000000000000000000000000000000000000000000000000002'
+    "address": "0x6da6a7f35aac2abe018eadd9d80ecc7c125deb17",
+    "topics": [
+      "0x5ba0ddd8e72e3c5c274414bd1ef0dec9ae5220e0f6f534d859043e2a52f0319f",
+      "0x0000000000000000000000005b085c2d090556aea54d595fe7a70ce98b3ca9e4",
+      "0x0000000000000000000000000000000000000000000000000000000000000002"
     ],
-    data: '0x0000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000237ce762aa51fcef340222b64282b11015dfe5e5',
-    blockHash: '0x227fbac8687763552032d5279bd5da8eca5e8ba279f4ffd68472dfb72b85d62e',
-    blockNumber: 8967362n,
-    blockTimestamp: '0x689b0968',
-    transactionHash: '0x3461ed7adfbc46b9477ea8ae2d659f5ce7f425af9df682f90079fcd558af1ceb',
-    transactionIndex: 119,
-    logIndex: 252,
-    removed: false
+    "data": "0x0000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000237ce762aa51fcef340222b64282b11015dfe5e5",
+    "blockHash": "0x227fbac8687763552032d5279bd5da8eca5e8ba279f4ffd68472dfb72b85d62e",
+    "blockNumber": "8967362n",
+    "blockTimestamp": "0x689b0968",
+    "transactionHash": "0x3461ed7adfbc46b9477ea8ae2d659f5ce7f425af9df682f90079fcd558af1ceb",
+    "transactionIndex": 119,
+    "logIndex": 252,
+    "removed": false
   }
 ]
-事件名: NFTListed
-事件参数: {
-  nftContract: '0x5B085c2D090556aEA54D595Fe7a70CE98B3CA9e4',
-  tokenId: 2n,
-  price: 1000000000000000000n,
-  paymentToken: '0x237cE762AA51FceF340222B64282B11015Dfe5E5'
-}
+```
 
-## 2.购买事件
-接收到新日志: [
+- **事件名**：NFTListed  
+- **核心参数**：  
+  - NFT 合约地址：`0x5B085c2D090556aEA54D595Fe7a70CE98B3CA9e4`  
+  - 代币 ID：`2`  
+  - 上架价格：`1000000000000000000`（1 个 ERC20 代币，单位：wei）  
+  - 支付代币地址：`0x237cE762AA51FceF340222B64282B11015Dfe5E5`  
+
+
+## 2. 购买事件
+接收到新日志（NFT 购买成功）：
+
+```json
+[
   {
-    eventName: 'NFTSold',
-    args: {
-      nftContract: '0x5B085c2D090556aEA54D595Fe7a70CE98B3CA9e4',
-      tokenId: 2n,
-      price: 1000000000000000000n,
-      paymentToken: '0x237cE762AA51FceF340222B64282B11015Dfe5E5'
+    "eventName": "NFTSold",
+    "args": {
+      "nftContract": "0x5B085c2D090556aEA54D595Fe7a70CE98B3CA9e4",
+      "tokenId": "2n",
+      "price": "1000000000000000000n",
+      "paymentToken": "0x237cE762AA51FceF340222B64282B11015Dfe5E5"
     },
-    address: '0x6da6a7f35aac2abe018eadd9d80ecc7c125deb17',
-    topics: [
-      '0x77c3ced349b08a2af4e9d443fb697437c3197b3095d43fcbdc2cdc97b1a60e0c',
-      '0x0000000000000000000000005b085c2d090556aea54d595fe7a70ce98b3ca9e4',
-      '0x0000000000000000000000000000000000000000000000000000000000000002'
+    "address": "0x6da6a7f35aac2abe018eadd9d80ecc7c125deb17",
+    "topics": [
+      "0x77c3ced349b08a2af4e9d443fb697437c3197b3095d43fcbdc2cdc97b1a60e0c",
+      "0x0000000000000000000000005b085c2d090556aea54d595fe7a70ce98b3ca9e4",
+      "0x0000000000000000000000000000000000000000000000000000000000000002"
     ],
-    data: '0x0000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000237ce762aa51fcef340222b64282b11015dfe5e5',
-    blockHash: '0x3873a905c2e28b6f59ca8944d259bd68ffc78982af2d26d2a09113e04856dbe3',
-    blockNumber: 8967366n,
-    blockTimestamp: '0x689b0998',
-    transactionHash: '0x46a2c10047272e88e88b6d418c975c65af7f954e5b247fc59942f8ab082e6142',
-    transactionIndex: 143,
-    logIndex: 294,
-    removed: false
+    "data": "0x0000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000237ce762aa51fcef340222b64282b11015dfe5e5",
+    "blockHash": "0x3873a905c2e28b6f59ca8944d259bd68ffc78982af2d26d2a09113e04856dbe3",
+    "blockNumber": "8967366n",
+    "blockTimestamp": "0x689b0998",
+    "transactionHash": "0x46a2c10047272e88e88b6d418c975c65af7f954e5b247fc59942f8ab082e6142",
+    "transactionIndex": 143,
+    "logIndex": 294,
+    "removed": false
   }
 ]
-事件名: NFTSold
-事件参数: {
-  nftContract: '0x5B085c2D090556aEA54D595Fe7a70CE98B3CA9e4',
-  tokenId: 2n,
-  price: 1000000000000000000n,
-  paymentToken: '0x237cE762AA51FceF340222B64282B11015Dfe5E5'
-}
+```
+
+- **事件名**：NFTSold  
+- **核心参数**：  
+  - NFT 合约地址：`0x5B085c2D090556aEA54D595Fe7a70CE98B3CA9e4`  
+  - 代币 ID：`2`  
+  - 成交价格：`1000000000000000000`（1 个 ERC20 代币，单位：wei）  
+  - 支付代币地址：`0x237cE762AA51FceF340222B64282B11015Dfe5E5`  
 
 
-# 二、 NFTMarket 事件监听，完整测试记录
+# 二、NFTMarket 事件监听完整测试记录
 
 ## 1. 部署
-
 ### 1.1 NFT 合约
 ```bash
 forge create --rpc-url $SEPOLIA_RPC_URL \
@@ -196,70 +205,8 @@ cast send --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY2 $MARKET_ADDRESS
 ```
 
 ## 9. 监控到的上架事件
-接收到新日志: [
-  {
-    eventName: 'NFTListed',
-    args: {
-      nftContract: '0x5B085c2D090556aEA54D595Fe7a70CE98B3CA9e4',
-      tokenId: 2n,
-      price: 1000000000000000000n,
-      paymentToken: '0x237cE762AA51FceF340222B64282B11015Dfe5E5'
-    },
-    address: '0x6da6a7f35aac2abe018eadd9d80ecc7c125deb17',
-    topics: [
-      '0x5ba0ddd8e72e3c5c274414bd1ef0dec9ae5220e0f6f534d859043e2a52f0319f',
-      '0x0000000000000000000000005b085c2d090556aea54d595fe7a70ce98b3ca9e4',
-      '0x0000000000000000000000000000000000000000000000000000000000000002'
-    ],
-    data: '0x0000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000237ce762aa51fcef340222b64282b11015dfe5e5',
-    blockHash: '0x227fbac8687763552032d5279bd5da8eca5e8ba279f4ffd68472dfb72b85d62e',
-    blockNumber: 8967362n,
-    blockTimestamp: '0x689b0968',
-    transactionHash: '0x3461ed7adfbc46b9477ea8ae2d659f5ce7f425af9df682f90079fcd558af1ceb',
-    transactionIndex: 119,
-    logIndex: 252,
-    removed: false
-  }
-]
-事件名: NFTListed
-事件参数: {
-  nftContract: '0x5B085c2D090556aEA54D595Fe7a70CE98B3CA9e4',
-  tokenId: 2n,
-  price: 1000000000000000000n,
-  paymentToken: '0x237cE762AA51FceF340222B64282B11015Dfe5E5'
-}
+见 一：1.上架事件
 
 ## 10. 监控到的购买事件
-接收到新日志: [
-  {
-    eventName: 'NFTSold',
-    args: {
-      nftContract: '0x5B085c2D090556aEA54D595Fe7a70CE98B3CA9e4',
-      tokenId: 2n,
-      price: 1000000000000000000n,
-      paymentToken: '0x237cE762AA51FceF340222B64282B11015Dfe5E5'
-    },
-    address: '0x6da6a7f35aac2abe018eadd9d80ecc7c125deb17',
-    topics: [
-      '0x77c3ced349b08a2af4e9d443fb697437c3197b3095d43fcbdc2cdc97b1a60e0c',
-      '0x0000000000000000000000005b085c2d090556aea54d595fe7a70ce98b3ca9e4',
-      '0x0000000000000000000000000000000000000000000000000000000000000002'
-    ],
-    data: '0x0000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000237ce762aa51fcef340222b64282b11015dfe5e5',
-    blockHash: '0x3873a905c2e28b6f59ca8944d259bd68ffc78982af2d26d2a09113e04856dbe3',
-    blockNumber: 8967366n,
-    blockTimestamp: '0x689b0998',
-    transactionHash: '0x46a2c10047272e88e88b6d418c975c65af7f954e5b247fc59942f8ab082e6142',
-    transactionIndex: 143,
-    logIndex: 294,
-    removed: false
-  }
-]
-事件名: NFTSold
-事件参数: {
-  nftContract: '0x5B085c2D090556aEA54D595Fe7a70CE98B3CA9e4',
-  tokenId: 2n,
-  price: 1000000000000000000n,
-  paymentToken: '0x237cE762AA51FceF340222B64282B11015Dfe5E5'
-}
+见 一：2.购买事件
 
