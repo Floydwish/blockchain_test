@@ -1,0 +1,51 @@
+[submodule "nft-market/lib/forge-std"]
+	path = nft-market/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "nft-market/lib/openzeppelin-contracts"]
+	path = nft-market/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "safe-multisig/lib/forge-std"]
+	path = safe-multisig/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "safe-multisig/lib/openzeppelin-contracts"]
+	path = safe-multisig/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "safe-multisig2/lib/forge-std"]
+	path = safe-multisig2/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "safe-multisig2/lib/openzeppelin-contracts"]
+	path = safe-multisig2/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "multisig-wallet/lib/forge-std"]
+	path = multisig-wallet/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "nftmarketdapp/lib/forge-std"]
+	path = nftmarketdapp/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "nftmarketdapp/lib/openzeppelin-contracts"]
+	path = nftmarketdapp/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "nftmarketnew/lib/forge-std"]
+	path = nftmarketnew/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "nftmarketnew/lib/openzeppelin-contracts"]
+	path = nftmarketnew/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "nftmarketnew2/lib/forge-std"]
+	path = nftmarketnew2/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "nftmarketnew2/lib/openzeppelin-contracts"]
+	path = nftmarketnew2/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "nftmarketnew3/lib/forge-std"]
+	path = nftmarketnew3/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "nftmarketnew3/lib/openzeppelin-contracts"]
+	path = nftmarketnew3/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "nftmarketnew4/lib/forge-std"]
+	path = nftmarketnew4/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "nftmarketnew4/lib/openzeppelin-contracts"]
+	path = nftmarketnew4/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts

@@ -1,0 +1,76 @@
+/*
+###### 阶段6：添加基础样式 #####
+一、说明
+1. 是什么
+- 定义应用的基本样式，包括布局、颜色、间距等
+
+2. 为什么
+- 好的样式提升用户体验，让界面更美观易用
+
+3. 怎么做
+- 使用 CSS 类选择器定义样式
+- 响应式设计：max-width 确保在不同屏幕上的良好显示
+- 状态样式：disabled 状态让用户知道按钮不可用
+
+*/
+
+.App {
+  text-align: center;
+  padding: 20px;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.App-main {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.market-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.action-section {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
