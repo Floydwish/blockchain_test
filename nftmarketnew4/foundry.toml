@@ -1,0 +1,13 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+
+# Gas reporting configuration
+# Gas 报告配置
+gas_reports = ["*"]                    # 生成报告的合约
+gas_reports_ignore = []                # 忽略的合约
+gas_reports_ignore_tests = false       # 是否忽略测试合约
+gas_reports_ignore_contracts = []      # 忽略的特定合约
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

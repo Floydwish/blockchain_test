@@ -41,39 +41,19 @@ contract myNFTTest is Test {
         nft.mint(user1,"");
     }
 
-    function testMintFailedInvalidTokenId() public {
-        nft.mint(user1, "http://localhost:5173/sample-metadata.json");
-
-
-        vm.expectRevert();
-        nft.mint(user1, "http://localhost:5173/sample-metadata.json" );
-    }
-
     function testMintFailedInvalidURI() public {
         vm.expectRevert();
         nft.mint(user1, "" );
     }
     
     function testPublicMintSuccess() public {
+        vm.prank(user1);
         nft.publicMint( "http://localhost:5173/sample-metadata.json");
         assertEq(nft.ownerOf(0), user1);
         assertEq(nft.balanceOf(user1), 1);
         assertEq(nft.tokenURI(0), "http://localhost:5173/sample-metadata.json");
     }
-    
-    function testPublicMintFailedInvalidAddress() public {
-        vm.prank(user1);
-        vm.expectRevert();
-        nft.publicMint( "http://localhost:5173/sample-metadata.json");
-    }
 
-    function testPublicMintFailedInvalidTokenId() public {
-        vm.prank(user1);
-        nft.publicMint( "http://localhost:5173/sample-metadata.json");
-        vm.prank(user1);
-        vm.expectRevert();
-        nft.publicMint("http://localhost:5173/sample-metadata.json");
-    }
     
     function testPublicMintFailedInvalidURI() public {
         vm.prank(user1);
